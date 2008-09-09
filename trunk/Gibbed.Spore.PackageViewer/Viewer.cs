@@ -10,12 +10,12 @@ using Gibbed.Spore.Package;
 
 namespace Gibbed.Spore.PackageViewer
 {
-    public partial class Viewer : Form
-    {
-        public Viewer()
-        {
-            InitializeComponent();
-        }
+	public partial class Viewer : Form
+	{
+		public Viewer()
+		{
+			InitializeComponent();
+		}
 
 		private Dictionary<uint, string> HashedNames;
 		private Dictionary<uint, string> TypeExtensions;
@@ -34,22 +34,22 @@ namespace Gibbed.Spore.PackageViewer
 			return rez;
 		}
 
-        private void OnLoad(object sender, EventArgs e)
-        {
-            string path;
-            path = (string)Microsoft.Win32.Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Electronic Arts\\SPORE", "DataDir", "");
-            if (path != null && path.Length > 0)
-            {
-                if (path.Length >= 2)
-                {
-                    if (path[0] == '"' && path[path.Length - 1] == '"')
-                    {
-                        path = path.Substring(1, path.Length - 2);
-                    }
-                }
+		private void OnLoad(object sender, EventArgs e)
+		{
+			string path;
+			path = (string)Microsoft.Win32.Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Electronic Arts\\SPORE", "DataDir", "");
+			if (path != null && path.Length > 0)
+			{
+				if (path.Length >= 2)
+				{
+					if (path[0] == '"' && path[path.Length - 1] == '"')
+					{
+						path = path.Substring(1, path.Length - 2);
+					}
+				}
 
-                this.openDialog.InitialDirectory = path;
-            }
+				this.openDialog.InitialDirectory = path;
+			}
 
 			this.HashedNames = new Dictionary<uint, string>();
 
@@ -114,7 +114,7 @@ namespace Gibbed.Spore.PackageViewer
 			this.TypeExtensions[0x617715D9] = "pd";
 			this.TypeExtensions[0x9B8E862F] = "world";
 			this.TypeExtensions[0xDFAD9F51] = "cell";
-        }
+		}
 
 		private string GetExtensionForType(uint typeId)
 		{
@@ -129,10 +129,10 @@ namespace Gibbed.Spore.PackageViewer
 		// A stupid way to do it but it's for the Save All function.
 		private DatabaseIndex[] DatabaseFiles;
 
-        private void OnOpen(object sender, EventArgs e)
-        {
-            if (this.openDialog.ShowDialog() != DialogResult.OK)
-            {
+		private void OnOpen(object sender, EventArgs e)
+		{
+			if (this.openDialog.ShowDialog() != DialogResult.OK)
+			{
 				return;
 			}
 
@@ -187,7 +187,7 @@ namespace Gibbed.Spore.PackageViewer
 
 			this.typeList.Sort();
 			this.typeList.EndUpdate();
-        }
+		}
 
 		private void OnSelectType(object sender, TreeViewEventArgs e)
 		{
@@ -300,5 +300,5 @@ namespace Gibbed.Spore.PackageViewer
 
 			input.Close();
 		}
-    }
+	}
 }
