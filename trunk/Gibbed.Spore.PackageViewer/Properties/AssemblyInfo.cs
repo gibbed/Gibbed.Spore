@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Spore.PackageViewer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Gibbed.Spore.PackageViewer")]
+[assembly: AssemblyDescription("Viewer for Spore packages.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Spore.PackageViewer")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
+[assembly: AssemblyProduct("Gibbed.Spore.PackageViewer")]
+[assembly: AssemblyCopyright("Copyright © Rick 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
