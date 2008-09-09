@@ -17,16 +17,16 @@ namespace Gibbed.Spore.Package
 
 	public class DatabaseIndex
 	{
-		public bool Compressed { get; set; }
-		public uint TypeId { get; set; }
-		public uint GroupId { get; set; }
-		public uint InstanceId { get; set; }
-		public uint Offset { get; set; }
-		public uint CompressedSize { get; set; }
-		public uint DecompressedSize { get; set; }
-		public short CompressedFlags { get; set; }
-		public ushort Flags { get; set; }
-		public uint Unknown { get; set; }
+		public bool Compressed;
+		public uint TypeId;
+		public uint GroupId;
+		public uint InstanceId;
+		public uint Offset;
+		public uint CompressedSize;
+		public uint DecompressedSize;
+		public short CompressedFlags;
+		public ushort Flags;
+		public uint Unknown;
 
 		public void CheckCompressed()
 		{
@@ -46,13 +46,13 @@ namespace Gibbed.Spore.Package
 
 	public class DatabasePackedFile
 	{
-		public Version Version { get; set; }
+		public Version Version;
 		public int Unknown0C;
-		public int Unknown10 { get; set; }
-		public int Unknown20 { get; set; }
-		public int Unknown28 { get; set; }
-		public int Unknown44 { get; set; }
-		public DatabaseIndex[] Index { get; set; }
+		public int Unknown10;
+		public int Unknown20;
+		public int Unknown28;
+		public int Unknown44;
+		public DatabaseIndex[] Indices;
 
 		public void Read(Stream stream)
 		{
@@ -160,47 +160,47 @@ namespace Gibbed.Spore.Package
 				indexUnknown = stream.ReadU32();
 			}
 
-			this.Index = new DatabaseIndex[indexCount];
+			this.Indices = new DatabaseIndex[indexCount];
 			for (int i = 0; i < indexCount; i++)
 			{
-				this.Index[i] = new DatabaseIndex();
+				this.Indices[i] = new DatabaseIndex();
 				#region this.Index[i].TypeId
 				if ((indexHeaderValues & (1 << 0)) == 1 << 0)
 				{
-					this.Index[i].TypeId = indexTypeId;
+					this.Indices[i].TypeId = indexTypeId;
 				}
 				else
 				{
-					this.Index[i].TypeId = stream.ReadU32();
+					this.Indices[i].TypeId = stream.ReadU32();
 				}
 				#endregion
 				#region this.Index[i].GroupId
 				if ((indexHeaderValues & (1 << 1)) == 1 << 1)
 				{
-					this.Index[i].GroupId = indexGroupId;
+					this.Indices[i].GroupId = indexGroupId;
 				}
 				else
 				{
-					this.Index[i].GroupId = stream.ReadU32();
+					this.Indices[i].GroupId = stream.ReadU32();
 				}
 				#endregion
 				#region this.Index[i].Unknown
 				if ((indexHeaderValues & (1 << 2)) == 1 << 2)
 				{
-					this.Index[i].Unknown = indexUnknown;
+					this.Indices[i].Unknown = indexUnknown;
 				}
 				else
 				{
-					this.Index[i].Unknown = stream.ReadU32();
+					this.Indices[i].Unknown = stream.ReadU32();
 				}
 				#endregion
-				this.Index[i].InstanceId = stream.ReadU32();
-				this.Index[i].Offset = stream.ReadU32();
-				this.Index[i].CompressedSize = stream.ReadU32();
-				this.Index[i].DecompressedSize = stream.ReadU32();
-				this.Index[i].CompressedFlags = stream.ReadS16();
-				this.Index[i].Flags = stream.ReadU16();
-				this.Index[i].CheckCompressed();
+				this.Indices[i].InstanceId = stream.ReadU32();
+				this.Indices[i].Offset = stream.ReadU32();
+				this.Indices[i].CompressedSize = stream.ReadU32();
+				this.Indices[i].DecompressedSize = stream.ReadU32();
+				this.Indices[i].CompressedFlags = stream.ReadS16();
+				this.Indices[i].Flags = stream.ReadU16();
+				this.Indices[i].CheckCompressed();
 			}
 		}
 	}

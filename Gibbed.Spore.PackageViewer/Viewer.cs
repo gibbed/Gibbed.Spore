@@ -140,16 +140,16 @@ namespace Gibbed.Spore.PackageViewer
 			DatabasePackedFile db = new DatabasePackedFile();
 			db.Read(input);
 
-			this.DatabaseFiles = db.Index;
+			this.DatabaseFiles = db.Indices;
 
 			Dictionary<uint, TreeNode> typeNodes = new Dictionary<uint, TreeNode>();
 
 			this.typeList.Nodes.Clear();
 			this.typeList.BeginUpdate();
 
-			for (int i = 0; i < db.Index.Length; i++)
+			for (int i = 0; i < db.Indices.Length; i++)
 			{
-				DatabaseIndex index = db.Index[i];
+				DatabaseIndex index = db.Indices[i];
 
 				TreeNode typeNode = null;
 				if (typeNodes.ContainsKey(index.TypeId) == false)
