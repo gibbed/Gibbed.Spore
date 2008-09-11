@@ -79,13 +79,27 @@ namespace Gibbed.Spore.PackageViewer
 			// Unhashed or unknown extension
 			this.TypeExtensions[0x00B1B104] = "prop";
 			this.TypeExtensions[0x00E6BCE5] = "gmdl";
+			this.TypeExtensions[0x011989B7] = "plt"; // NEW
+			this.TypeExtensions[0x01AD2416] = "creature_traits"; // NEW
+			this.TypeExtensions[0x01AD2417] = "building_traits"; // NEW
+			this.TypeExtensions[0x01AD2418] = "vehicle_traits"; // NEW
+			this.TypeExtensions[0x01C135DA] = "gmsh"; // NEW
+			this.TypeExtensions[0x01C3C4B3] = "trait_pill"; // NEW
 			this.TypeExtensions[0x0248F226] = "css";
 			this.TypeExtensions[0x024A0E52] = "trigger";
 			this.TypeExtensions[0x02523258] = "formation";
+			this.TypeExtensions[0x02D5C9AF] = "summary"; // NEW
+			this.TypeExtensions[0x02D5C9B0] = "summary_pill"; // NEW
 			this.TypeExtensions[0x02FAC0B6] = "txt";
+			this.TypeExtensions[0x030BDEE3] = "pollen_metadata"; // NEW
+			this.TypeExtensions[0x0376C3DA] = "hm"; // NEW
 			this.TypeExtensions[0x0472329B] = "htra";
+			this.TypeExtensions[0x2F4E681C] = "raster"; // NEW
+			this.TypeExtensions[0x2F7D0002] = "jpeg";
 			this.TypeExtensions[0x2F7D0004] = "png";
+			this.TypeExtensions[0x2F7D0005] = "bmp";
 			this.TypeExtensions[0x2F7D0006] = "tga";
+			this.TypeExtensions[0x2F7D0007] = "gif";
 			this.TypeExtensions[0x4AEB6BC6] = "tlsa";
 			this.TypeExtensions[0x7C19AA7A] = "pctp";
 			this.TypeExtensions[0xEFBDA3FF] = "layout";
@@ -147,6 +161,9 @@ namespace Gibbed.Spore.PackageViewer
 			this.typeList.Nodes.Clear();
 			this.typeList.BeginUpdate();
 
+			TreeNode knownNode = this.typeList.Nodes.Add("Known");
+			TreeNode unknownNode = this.typeList.Nodes.Add("Unknown");
+
 			for (int i = 0; i < db.Indices.Length; i++)
 			{
 				DatabaseIndex index = db.Indices[i];
@@ -157,9 +174,11 @@ namespace Gibbed.Spore.PackageViewer
 					typeNode = new TreeNode();
 					#region typeNode.Text = extension or typeid
 					string text = this.GetExtensionForType(index.TypeId);
+					bool isUnknown = false;
 					if (text == null)
 					{
 						text = index.TypeId.ToString("X8");
+						isUnknown = true;
 					}
 					else
 					{
@@ -168,7 +187,14 @@ namespace Gibbed.Spore.PackageViewer
 					typeNode.Text = text;
 					#endregion
 					typeNode.Tag = new List<DatabaseIndex>();
-					this.typeList.Nodes.Add(typeNode);
+					if (isUnknown == false)
+					{
+						knownNode.Nodes.Add(typeNode);
+					}
+					else
+					{
+						unknownNode.Nodes.Add(typeNode);
+					}
 					typeNodes[index.TypeId] = typeNode;
 				}
 				else
@@ -187,6 +213,7 @@ namespace Gibbed.Spore.PackageViewer
 
 			this.typeList.Sort();
 			this.typeList.EndUpdate();
+			knownNode.Expand();
 		}
 
 		private void OnSelectType(object sender, TreeViewEventArgs e)
