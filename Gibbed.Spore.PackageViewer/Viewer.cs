@@ -53,7 +53,7 @@ namespace Gibbed.Spore.PackageViewer
 
 			this.HashedNames = new Dictionary<uint, string>();
 
-			string listPath = Path.Combine(Application.StartupPath, "filelist.txt");
+			string listPath = Path.Combine(Application.StartupPath, "hashnames.txt");
 			if (File.Exists(listPath))
 			{
 				TextReader reader = new StreamReader(listPath);
@@ -242,8 +242,17 @@ namespace Gibbed.Spore.PackageViewer
 					listViewItem.Text = "<" + file.InstanceId.ToString("X8") + ">";
 				}
 
-				listViewItem.SubItems.Add(file.GroupId.ToString("X8"));
+				if (this.HashedNames.ContainsKey(file.GroupId))
+				{
+					listViewItem.SubItems.Add(this.HashedNames[file.GroupId]);
+				}
+				else
+				{
+					listViewItem.SubItems.Add("<" + file.GroupId.ToString("X8") + ">");
+				}
+
 				listViewItem.SubItems.Add(file.DecompressedSize.ToString());
+				listViewItem.SubItems.Add(file.Unknown.ToString("X8"));
 				listViewItem.Tag = file;
 
 				this.fileList.Items.Add(listViewItem);
