@@ -44,6 +44,7 @@
 			this.columnGroup = new System.Windows.Forms.ColumnHeader();
 			this.columnSize = new System.Windows.Forms.ColumnHeader();
 			this.saveAllFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+			this.columnUnknown = new System.Windows.Forms.ColumnHeader();
 			this.menuStrip.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -56,7 +57,7 @@
             this.fileMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
-			this.menuStrip.Size = new System.Drawing.Size(632, 24);
+			this.menuStrip.Size = new System.Drawing.Size(792, 24);
 			this.menuStrip.TabIndex = 0;
 			this.menuStrip.Text = "menuStrip1";
 			// 
@@ -119,8 +120,8 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.fileList);
-			this.splitContainer1.Size = new System.Drawing.Size(632, 268);
-			this.splitContainer1.SplitterDistance = 210;
+			this.splitContainer1.Size = new System.Drawing.Size(792, 428);
+			this.splitContainer1.SplitterDistance = 240;
 			this.splitContainer1.TabIndex = 1;
 			// 
 			// typeList
@@ -128,7 +129,7 @@
 			this.typeList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.typeList.Location = new System.Drawing.Point(0, 0);
 			this.typeList.Name = "typeList";
-			this.typeList.Size = new System.Drawing.Size(210, 268);
+			this.typeList.Size = new System.Drawing.Size(240, 428);
 			this.typeList.TabIndex = 0;
 			this.typeList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnSelectType);
 			// 
@@ -137,12 +138,13 @@
 			this.fileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnName,
             this.columnGroup,
-            this.columnSize});
+            this.columnSize,
+            this.columnUnknown});
 			this.fileList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.fileList.FullRowSelect = true;
 			this.fileList.Location = new System.Drawing.Point(0, 0);
 			this.fileList.Name = "fileList";
-			this.fileList.Size = new System.Drawing.Size(418, 268);
+			this.fileList.Size = new System.Drawing.Size(548, 428);
 			this.fileList.TabIndex = 0;
 			this.fileList.UseCompatibleStateImageBehavior = false;
 			this.fileList.View = System.Windows.Forms.View.Details;
@@ -150,7 +152,7 @@
 			// columnName
 			// 
 			this.columnName.Text = "Name";
-			this.columnName.Width = 200;
+			this.columnName.Width = 280;
 			// 
 			// columnGroup
 			// 
@@ -162,11 +164,16 @@
 			this.columnSize.Text = "Size";
 			this.columnSize.Width = 80;
 			// 
+			// columnUnknown
+			// 
+			this.columnUnknown.Text = "Unknown";
+			this.columnUnknown.Width = 80;
+			// 
 			// Viewer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(632, 292);
+			this.ClientSize = new System.Drawing.Size(792, 452);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.menuStrip);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -201,6 +208,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.FolderBrowserDialog saveAllFolderDialog;
+		private System.Windows.Forms.ColumnHeader columnUnknown;
     }
 }
 
