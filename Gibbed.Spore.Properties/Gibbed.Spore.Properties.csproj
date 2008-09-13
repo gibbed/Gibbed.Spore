@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E9713AAB-0C54-4AC8-BD44-DF99022E1CE3}</ProjectGuid>
+    <ProjectGuid>{C149F651-1331-43DE-B838-8756E3AFA89E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gibbed.Spore.Package</RootNamespace>
-    <AssemblyName>Gibbed.Spore.Package</AssemblyName>
+    <RootNamespace>Gibbed.Spore.Properties</RootNamespace>
+    <AssemblyName>Gibbed.Spore.Properties</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,8 +45,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabasePackedFile.cs" />
+    <Compile Include="ComplexProperty.cs" />
+    <Compile Include="Numbers\BoolProperty.cs" />
+    <Compile Include="Complex\BoundingBoxProperty.cs" />
+    <Compile Include="Complex\ColorRGBAProperty.cs" />
+    <Compile Include="Complex\ColorRGBProperty.cs" />
+    <Compile Include="Numbers\FloatProperty.cs" />
+    <Compile Include="Strings\KeyProperty.cs" />
+    <Compile Include="ArrayProperty.cs" />
+    <Compile Include="Property.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyFile.cs" />
+    <Compile Include="Numbers\Int32Property.cs" />
+    <Compile Include="Strings\String8Property.cs" />
+    <Compile Include="Complex\TextProperty.cs" />
+    <Compile Include="Complex\TransformProperty.cs" />
+    <Compile Include="Numbers\UInt32Property.cs" />
+    <Compile Include="Strings\String16Property.cs" />
+    <Compile Include="Complex\Vector2Property.cs" />
+    <Compile Include="Complex\Vector3Property.cs" />
+    <Compile Include="Complex\Vector4Property.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Gibbed.Spore.Helpers\Gibbed.Spore.Helpers.csproj">
