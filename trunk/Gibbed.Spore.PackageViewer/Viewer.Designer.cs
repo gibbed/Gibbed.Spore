@@ -43,8 +43,8 @@
 			this.columnName = new System.Windows.Forms.ColumnHeader();
 			this.columnGroup = new System.Windows.Forms.ColumnHeader();
 			this.columnSize = new System.Windows.Forms.ColumnHeader();
-			this.saveAllFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.columnUnknown = new System.Windows.Forms.ColumnHeader();
+			this.saveAllFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.menuStrip.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -141,6 +141,7 @@
             this.columnSize,
             this.columnUnknown});
 			this.fileList.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.fileList.Font = new System.Drawing.Font("Courier New", 9.267326F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.fileList.FullRowSelect = true;
 			this.fileList.Location = new System.Drawing.Point(0, 0);
 			this.fileList.Name = "fileList";
@@ -152,12 +153,12 @@
 			// columnName
 			// 
 			this.columnName.Text = "Name";
-			this.columnName.Width = 280;
+			this.columnName.Width = 260;
 			// 
 			// columnGroup
 			// 
 			this.columnGroup.Text = "Group";
-			this.columnGroup.Width = 80;
+			this.columnGroup.Width = 100;
 			// 
 			// columnSize
 			// 

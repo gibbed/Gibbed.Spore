@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using Gibbed.Spore.Helpers;
 using Gibbed.Spore.Package;
 
 namespace Gibbed.Spore.PackageViewer
@@ -16,6 +17,8 @@ namespace Gibbed.Spore.PackageViewer
 		{
 			InitializeComponent();
 		}
+
+		private Font MonospaceFont = new Font(FontFamily.GenericMonospace, 9.0f);
 
 		private Dictionary<uint, string> HashedNames;
 		private Dictionary<uint, string> TypeExtensions;
@@ -53,7 +56,7 @@ namespace Gibbed.Spore.PackageViewer
 
 			this.HashedNames = new Dictionary<uint, string>();
 
-			string listPath = Path.Combine(Application.StartupPath, "hashnames.txt");
+			string listPath = Path.Combine(Application.StartupPath, "hash_names.txt");
 			if (File.Exists(listPath))
 			{
 				TextReader reader = new StreamReader(listPath);
@@ -79,22 +82,22 @@ namespace Gibbed.Spore.PackageViewer
 			// Unhashed or unknown extension
 			this.TypeExtensions[0x00B1B104] = "prop";
 			this.TypeExtensions[0x00E6BCE5] = "gmdl";
-			this.TypeExtensions[0x011989B7] = "plt"; // NEW
-			this.TypeExtensions[0x01AD2416] = "creature_traits"; // NEW
-			this.TypeExtensions[0x01AD2417] = "building_traits"; // NEW
-			this.TypeExtensions[0x01AD2418] = "vehicle_traits"; // NEW
-			this.TypeExtensions[0x01C135DA] = "gmsh"; // NEW
-			this.TypeExtensions[0x01C3C4B3] = "trait_pill"; // NEW
+			this.TypeExtensions[0x011989B7] = "plt"; // Palette
+			this.TypeExtensions[0x01AD2416] = "creature_traits";
+			this.TypeExtensions[0x01AD2417] = "building_traits";
+			this.TypeExtensions[0x01AD2418] = "vehicle_traits";
+			this.TypeExtensions[0x01C135DA] = "gmsh";
+			this.TypeExtensions[0x01C3C4B3] = "trait_pill";
 			this.TypeExtensions[0x0248F226] = "css";
 			this.TypeExtensions[0x024A0E52] = "trigger";
 			this.TypeExtensions[0x02523258] = "formation";
-			this.TypeExtensions[0x02D5C9AF] = "summary"; // NEW
-			this.TypeExtensions[0x02D5C9B0] = "summary_pill"; // NEW
+			this.TypeExtensions[0x02D5C9AF] = "summary";
+			this.TypeExtensions[0x02D5C9B0] = "summary_pill";
 			this.TypeExtensions[0x02FAC0B6] = "txt";
-			this.TypeExtensions[0x030BDEE3] = "pollen_metadata"; // NEW
-			this.TypeExtensions[0x0376C3DA] = "hm"; // NEW
+			this.TypeExtensions[0x030BDEE3] = "pollen_metadata";
+			this.TypeExtensions[0x0376C3DA] = "hm";
 			this.TypeExtensions[0x0472329B] = "htra";
-			this.TypeExtensions[0x2F4E681C] = "raster"; // NEW
+			this.TypeExtensions[0x2F4E681C] = "raster";
 			this.TypeExtensions[0x2F7D0002] = "jpeg";
 			this.TypeExtensions[0x2F7D0004] = "png";
 			this.TypeExtensions[0x2F7D0005] = "bmp";
@@ -177,12 +180,8 @@ namespace Gibbed.Spore.PackageViewer
 					bool isUnknown = false;
 					if (text == null)
 					{
-						text = index.TypeId.ToString("X8");
+						text = "#" + index.TypeId.ToString("X8");
 						isUnknown = true;
-					}
-					else
-					{
-						text = "." + text;
 					}
 					typeNode.Text = text;
 					#endregion
@@ -193,6 +192,7 @@ namespace Gibbed.Spore.PackageViewer
 					}
 					else
 					{
+						typeNode.NodeFont = this.MonospaceFont;
 						unknownNode.Nodes.Add(typeNode);
 					}
 					typeNodes[index.TypeId] = typeNode;
@@ -231,7 +231,7 @@ namespace Gibbed.Spore.PackageViewer
 
 			foreach (DatabaseIndex file in files)
 			{
-				ListViewItem listViewItem = new ListViewItem();
+				ListViewItem listViewItem = new ListViewItem("");
 
 				if (this.HashedNames.ContainsKey(file.InstanceId))
 				{
@@ -239,7 +239,7 @@ namespace Gibbed.Spore.PackageViewer
 				}
 				else
 				{
-					listViewItem.Text = "<" + file.InstanceId.ToString("X8") + ">";
+					listViewItem.Text = "#" + file.InstanceId.ToString("X8");
 				}
 
 				if (this.HashedNames.ContainsKey(file.GroupId))
@@ -248,11 +248,11 @@ namespace Gibbed.Spore.PackageViewer
 				}
 				else
 				{
-					listViewItem.SubItems.Add("<" + file.GroupId.ToString("X8") + ">");
+					listViewItem.SubItems.Add("#" + file.GroupId.ToString("X8")).Font = this.MonospaceFont;
 				}
 
 				listViewItem.SubItems.Add(file.DecompressedSize.ToString());
-				listViewItem.SubItems.Add(file.Unknown.ToString("X8"));
+				listViewItem.SubItems.Add(file.Unknown.ToString("X8")).Font = this.MonospaceFont;
 				listViewItem.Tag = file;
 
 				this.fileList.Items.Add(listViewItem);
@@ -293,20 +293,26 @@ namespace Gibbed.Spore.PackageViewer
 				}
 				else
 				{
-					fileName = index.InstanceId.ToString("X8");
+					fileName = "#" + index.InstanceId.ToString("X8");
 				}
 
-				groupName = index.GroupId.ToString("X8");
+				if (this.HashedNames.ContainsKey(index.GroupId))
+				{
+					groupName = this.HashedNames[index.GroupId];
+				}
+				else
+				{
+					groupName = "#" + index.GroupId.ToString("X8");
+				}
 
 				typeName = this.GetExtensionForType(index.TypeId);
 				
 				if (typeName == null)
 				{
-					typeName = index.TypeId.ToString("X8");
+					typeName = "#" + index.TypeId.ToString("X8");
 				}
 				else
 				{
-					// this is just a silly way to get real extensions sorted on the top before the unknown types
 					fileName += "." + typeName;
 				}
 
