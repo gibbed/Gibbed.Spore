@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibbed.Spore.PropertyEditor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibbed.Spore.Helpers", "Gibbed.Spore.Helpers\Gibbed.Spore.Helpers.csproj", "{57A00822-35FA-45AB-9950-110BD8446EFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibbed.Spore.PropToXML", "Gibbed.Spore.PropToXML\Gibbed.Spore.PropToXML.csproj", "{3A3A1552-7AF9-4E19-AA9B-D8DDFC44599D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibbed.Spore.XMLToProp", "Gibbed.Spore.XMLToProp\Gibbed.Spore.XMLToProp.csproj", "{EAD45C63-B15E-4F11-BDC0-1F98A93E1A82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{57A00822-35FA-45AB-9950-110BD8446EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57A00822-35FA-45AB-9950-110BD8446EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A00822-35FA-45AB-9950-110BD8446EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A3A1552-7AF9-4E19-AA9B-D8DDFC44599D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A3A1552-7AF9-4E19-AA9B-D8DDFC44599D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A3A1552-7AF9-4E19-AA9B-D8DDFC44599D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A3A1552-7AF9-4E19-AA9B-D8DDFC44599D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAD45C63-B15E-4F11-BDC0-1F98A93E1A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAD45C63-B15E-4F11-BDC0-1F98A93E1A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAD45C63-B15E-4F11-BDC0-1F98A93E1A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAD45C63-B15E-4F11-BDC0-1F98A93E1A82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

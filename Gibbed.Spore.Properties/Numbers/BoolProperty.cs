@@ -11,26 +11,24 @@ namespace Gibbed.Spore.Properties
 	{
 		public bool Value;
 
-		public override void Read(Stream input, bool array)
+		public override void ReadProp(Stream input, bool array)
 		{
 			this.Value = input.ReadBoolean();
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteProp(Stream output, bool array)
 		{
-			throw new NotImplementedException();
+			output.WriteBoolean(this.Value);
 		}
 
-		public override string Literal
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			get
-			{
-				return this.Value ? "true" : "false";
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+			output.WriteValue(this.Value);
+		}
+
+		public override void ReadXML(System.Xml.XmlReader input)
+		{
+			this.Value = bool.Parse(input.ReadString());
 		}
 	}
 }

@@ -5,13 +5,13 @@ using Gibbed.Spore.Helpers;
 namespace Gibbed.Spore.Properties
 {
 	[PropertyDefinition("key", "keys", 32)]
-	class KeyProperty : Property
+	public class KeyProperty : Property
 	{
 		public uint TypeId;
 		public uint GroupId;
 		public uint InstanceId;
 
-		public override void Read(Stream input, bool array)
+		public override void ReadProp(Stream input, bool array)
 		{
 			this.InstanceId = input.ReadU32();
 			this.TypeId = input.ReadU32();
@@ -23,35 +23,64 @@ namespace Gibbed.Spore.Properties
 			}
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteProp(Stream output, bool array)
 		{
-			throw new NotImplementedException();
+			output.WriteU32(this.InstanceId);
+			output.WriteU32(this.TypeId);
+			output.WriteU32(this.GroupId);
+
+			if (array == false)
+			{
+				output.WriteU32(0);
+			}
 		}
 
-		public override string Literal
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			set
+			if (this.GroupId != 0)
 			{
-				throw new NotImplementedException();
+				output.WriteAttributeString("groupid", "0x" + this.GroupId.ToString("X8"));
 			}
 
-			get
+			output.WriteAttributeString("instanceid", "0x" + this.InstanceId.ToString("X8"));
+
+			if (this.TypeId != 0)
 			{
-				string rez = "";
+				output.WriteAttributeString("typeid", "0x" + this.TypeId.ToString("X8"));
+			}
+		}
 
-				if (this.GroupId != 0)
-				{
-					rez = "0x" + this.GroupId.ToString("X8") + "!";
-				}
+		public override void ReadXML(System.Xml.XmlReader input)
+		{
+			string groupText = input.GetAttribute("groupid");
+			string instanceText = input.GetAttribute("instanceid");
+			string typeText = input.GetAttribute("typeid");
 
-				rez += "0x" + this.InstanceId.ToString("X8");
+			if (groupText == null)
+			{
+				this.GroupId = 0;
+			}
+			else
+			{
+				this.GroupId = groupText.GetHexNumber();
+			}
 
-				if (this.TypeId != 0)
-				{
-					rez += ".0x" + this.TypeId.ToString("X8");
-				}
+			if (instanceText == null)
+			{
+				throw new Exception("instanceid cannot be null for key");
+			}
+			else
+			{
+				this.InstanceId = instanceText.GetHexNumber();
+			}
 
-				return rez;
+			if (typeText == null)
+			{
+				this.TypeId = 0;
+			}
+			else
+			{
+				this.TypeId = typeText.GetHexNumber();
 			}
 		}
 	}

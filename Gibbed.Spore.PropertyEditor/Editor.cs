@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
+using Gibbed.Spore.Helpers;
 
 namespace Gibbed.Spore.PropertyEditor
 {
@@ -19,20 +20,6 @@ namespace Gibbed.Spore.PropertyEditor
 		}
 
 		private Dictionary<uint, string> PropertyNames = new Dictionary<uint, string>();
-
-		// FNV hash that EA loves to use :-)
-		private static uint FNV(string input)
-		{
-			uint rez = 0x811C9DC5;
-
-			for (int i = 0; i < input.Length; i++)
-			{
-				rez *= 0x1000193;
-				rez ^= (char)(input[i]);
-			}
-
-			return rez;
-		}
 
 		private void LoadPropertyNames(string path)
 		{
@@ -54,15 +41,11 @@ namespace Gibbed.Spore.PropertyEditor
 				if (key.StartsWith("(hash(") && key.EndsWith("))"))
 				{
 					string tmp = key.Substring(6, key.Length - 8);
-					id = FNV(tmp);
-				}
-				else if (key.StartsWith("0x"))
-				{
-					id = uint.Parse(key.Substring(2), System.Globalization.NumberStyles.AllowHexSpecifier);
+					id = tmp.FNV();
 				}
 				else
 				{
-					id = uint.Parse(key);
+					id = key.GetHexNumber();
 				}
 
 				this.PropertyNames[id] = value;

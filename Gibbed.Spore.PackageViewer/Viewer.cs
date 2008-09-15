@@ -23,20 +23,6 @@ namespace Gibbed.Spore.PackageViewer
 		private Dictionary<uint, string> HashedNames;
 		private Dictionary<uint, string> TypeExtensions;
 
-		// FNV hash that EA loves to use :-)
-		private static uint FNV(string input)
-		{
-			uint rez = 0x811C9DC5;
-
-			for (int i = 0; i < input.Length; i++)
-			{
-				rez *= 0x1000193;
-				rez ^= (char)(input[i]);
-			}
-
-			return rez;
-		}
-
 		private void OnLoad(object sender, EventArgs e)
 		{
 			string path;
@@ -69,7 +55,7 @@ namespace Gibbed.Spore.PackageViewer
 						break;
 					}
 
-					uint hash = FNV(line);
+					uint hash = line.FNV();
 					this.HashedNames[hash] = line;
 				}
 
@@ -116,7 +102,7 @@ namespace Gibbed.Spore.PackageViewer
 			this.TypeExtensions[0x24682294] = "vcl"; // vehicle
 			this.TypeExtensions[0x250FE9A2] = "spui"; // SPore User Interface
 			this.TypeExtensions[0x25DF0112] = "gait";
-			this.TypeExtensions[0x2B6CAB5F] = "txt"; // localized text
+			this.TypeExtensions[0x2B6CAB5F] = "locale"; // this is actually 'txt', but I renamed it to locale so it doesn't conflict with the other txt
 			this.TypeExtensions[0x2B978C46] = "crt"; // creature
 			this.TypeExtensions[0x37979F71] = "cfg";
 			this.TypeExtensions[0x3C77532E] = "psd";
@@ -324,7 +310,7 @@ namespace Gibbed.Spore.PackageViewer
 				if (index.Compressed)
 				{
 					input.Seek(index.Offset, SeekOrigin.Begin);
-					byte[] d = input.Decompress(index.CompressedSize, index.DecompressedSize);
+					byte[] d = input.RefPackDecompress(index.CompressedSize, index.DecompressedSize);
 					FileStream output = new FileStream(path, FileMode.Create);
 					output.Write(d, 0, d.Length);
 					output.Close();

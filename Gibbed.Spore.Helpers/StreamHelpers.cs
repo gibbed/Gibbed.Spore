@@ -17,6 +17,11 @@ namespace Gibbed.Spore.Helpers
 			return stream.ReadU8() > 0 ? true : false;
 		}
 
+		public static void WriteBoolean(this Stream stream, bool value)
+		{
+			stream.WriteU8((byte)(value == true ? 1 : 0));
+		}
+
 		/// <summary>
 		/// Read an unsigned 8-bit integer.
 		/// </summary>
@@ -27,6 +32,11 @@ namespace Gibbed.Spore.Helpers
 			return (byte)stream.ReadByte();
 		}
 
+		public static void WriteU8(this Stream stream, byte value)
+		{
+			stream.WriteByte(value);
+		}
+
 		/// <summary>
 		/// Read a signed 8-bit integer;
 		/// </summary>
@@ -35,6 +45,11 @@ namespace Gibbed.Spore.Helpers
 		public static char ReadS8(this Stream stream)
 		{
 			return (char)stream.ReadByte();
+		}
+
+		public static void WriteS8(this Stream stream, char value)
+		{
+			stream.WriteByte((byte)value);
 		}
 
 		/// <summary>
@@ -49,6 +64,12 @@ namespace Gibbed.Spore.Helpers
 			return BitConverter.ToInt16(data, 0);
 		}
 
+		public static void WriteS16(this Stream stream, Int16 value)
+		{
+			byte[] data = BitConverter.GetBytes(value);
+			stream.Write(data, 0, 2);
+		}
+
 		/// <summary>
 		/// Read a signed 16-bit big-endian integer.
 		/// </summary>
@@ -59,6 +80,12 @@ namespace Gibbed.Spore.Helpers
 			byte[] data = new byte[2];
 			stream.Read(data, 0, 2);
 			return BitConverter.ToInt16(data, 0).Swap();
+		}
+
+		public static void WriteS16BE(this Stream stream, Int16 value)
+		{
+			byte[] data = BitConverter.GetBytes(value.Swap());
+			stream.Write(data, 0, 2);
 		}
 
 		/// <summary>
@@ -73,6 +100,12 @@ namespace Gibbed.Spore.Helpers
 			return BitConverter.ToUInt16(data, 0);
 		}
 
+		public static void WriteU16(this Stream stream, UInt16 value)
+		{
+			byte[] data = BitConverter.GetBytes(value);
+			stream.Write(data, 0, 2);
+		}
+
 		/// <summary>
 		/// Read an unsigned 16-bit big-endian integer.
 		/// </summary>
@@ -83,6 +116,12 @@ namespace Gibbed.Spore.Helpers
 			byte[] data = new byte[2];
 			stream.Read(data, 0, 2);
 			return BitConverter.ToUInt16(data, 0).Swap();
+		}
+
+		public static void WriteU16BE(this Stream stream, UInt16 value)
+		{
+			byte[] data = BitConverter.GetBytes(value.Swap());
+			stream.Write(data, 0, 2);
 		}
 
 		/// <summary>
@@ -97,6 +136,12 @@ namespace Gibbed.Spore.Helpers
 			return BitConverter.ToInt32(data, 0);
 		}
 
+		public static void WriteS16(this Stream stream, Int32 value)
+		{
+			byte[] data = BitConverter.GetBytes(value);
+			stream.Write(data, 0, 4);
+		}
+
 		/// <summary>
 		/// Read a signed 32-bit big-endian integer.
 		/// </summary>
@@ -107,6 +152,12 @@ namespace Gibbed.Spore.Helpers
 			byte[] data = new byte[4];
 			stream.Read(data, 0, 4);
 			return BitConverter.ToInt32(data, 0).Swap();
+		}
+
+		public static void WriteS32BE(this Stream stream, Int32 value)
+		{
+			byte[] data = BitConverter.GetBytes(value.Swap());
+			stream.Write(data, 0, 4);
 		}
 
 		/// <summary>
@@ -121,6 +172,12 @@ namespace Gibbed.Spore.Helpers
 			return BitConverter.ToUInt32(data, 0);
 		}
 
+		public static void WriteU32(this Stream stream, UInt32 value)
+		{
+			byte[] data = BitConverter.GetBytes(value);
+			stream.Write(data, 0, 4);
+		}
+
 		/// <summary>
 		/// Read an unsigned 32-bit big-endian integer.
 		/// </summary>
@@ -131,6 +188,12 @@ namespace Gibbed.Spore.Helpers
 			byte[] data = new byte[4];
 			stream.Read(data, 0, 4);
 			return BitConverter.ToUInt32(data, 0).Swap();
+		}
+
+		public static void WriteU32BE(this Stream stream, UInt32 value)
+		{
+			byte[] data = BitConverter.GetBytes(value.Swap());
+			stream.Write(data, 0, 4);
 		}
 
 		/// <summary>
@@ -193,6 +256,12 @@ namespace Gibbed.Spore.Helpers
 			return BitConverter.ToSingle(data, 0);
 		}
 
+		public static void WriteF32(this Stream stream, Single value)
+		{
+			byte[] data = BitConverter.GetBytes(value);
+			stream.Write(data, 0, 4);
+		}
+
 		/// <summary>
 		/// Read a 32-bit floating point number.
 		/// </summary>
@@ -207,7 +276,15 @@ namespace Gibbed.Spore.Helpers
 			return BitConverter.ToSingle(data, 0);
 		}
 
-		public static void ReadCompressionHeader(this Stream stream)
+		public static void WriteF32BE(this Stream stream, Single value)
+		{
+			byte[] data = BitConverter.GetBytes(value);
+			UInt32 swappedvalue = BitConverter.ToUInt32(data, 0).Swap();
+			data = BitConverter.GetBytes(swappedvalue);
+			stream.Write(data, 0, 4);
+		}
+
+		public static void ReadRefPackCompressionHeader(this Stream stream)
 		{
 			byte[] header = new byte[2];
 			stream.Read(header, 0, header.Length);
@@ -235,13 +312,13 @@ namespace Gibbed.Spore.Helpers
 			}
 		}
 
-		public static byte[] Decompress(this Stream stream, uint compressedSize, uint decompressedSize)
+		public static byte[] RefPackDecompress(this Stream stream, uint compressedSize, uint decompressedSize)
 		{
 			long baseOffset = stream.Position;
 			byte[] outputData = new byte[decompressedSize];
 			uint offset = 0;
 
-			stream.ReadCompressionHeader();
+			stream.ReadRefPackCompressionHeader();
 
 			while (stream.Position < baseOffset + compressedSize)
 			{

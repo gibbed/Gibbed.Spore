@@ -7,11 +7,11 @@ using Gibbed.Spore.Helpers;
 namespace Gibbed.Spore.Properties
 {
 	[PropertyDefinition("string16", "string16s", 19)]
-	class String16Property : Property
+	public class String16Property : Property
 	{
 		public string Value;
 
-		public override void Read(Stream input, bool array)
+		public override void ReadProp(Stream input, bool array)
 		{
 			int length = input.ReadS32BE();
 			byte[] data = new byte[length * 2];
@@ -19,21 +19,21 @@ namespace Gibbed.Spore.Properties
 			this.Value = Encoding.Unicode.GetString(data);
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteProp(Stream output, bool array)
 		{
-			throw new NotImplementedException();
+			output.WriteS32BE(this.Value.Length);
+			byte[] data = Encoding.Unicode.GetBytes(this.Value);
+			output.Write(data, 0, data.Length);
 		}
 
-		public override string Literal
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			get
-			{
-				return '"' + this.Value + '"';
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+			output.WriteValue(this.Value);
+		}
+
+		public override void ReadXML(System.Xml.XmlReader input)
+		{
+			this.Value = input.ReadString();
 		}
 	}
 }
