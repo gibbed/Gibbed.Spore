@@ -11,45 +11,29 @@ namespace Gibbed.Spore.Properties
 		public Type PropertyType;
 		public List<Property> Values = new List<Property>();
 
-		public override void Read(Stream input, bool array)
+		public override void ReadProp(Stream input, bool array)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteProp(Stream output, bool array)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override string Literal
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			get
+			foreach (Property property in this.Values)
 			{
-				string rez = "";
-
-				foreach (Property value in this.Values)
-				{
-					if (rez.Length > 0)
-					{
-						rez += " ";
-					}
-
-					string literal = value.Literal;
-
-					if (value is ComplexProperty && literal.StartsWith("(") == false && literal.EndsWith(")") == false)
-					{
-						literal = "(" + literal + ")";
-					}
-
-					rez += literal;
-				}
-
-				return rez;
+				output.WriteStartElement(property.GetType().GetSingularName());
+				property.WriteXML(output);
+				output.WriteEndElement();
 			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+		}
+
+		public override void ReadXML(System.Xml.XmlReader input)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

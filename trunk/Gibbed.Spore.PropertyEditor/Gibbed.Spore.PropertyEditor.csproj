@@ -81,6 +81,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Gibbed.Spore.Helpers\Gibbed.Spore.Helpers.csproj">
+      <Project>{57A00822-35FA-45AB-9950-110BD8446EFB}</Project>
+      <Name>Gibbed.Spore.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Gibbed.Spore.Properties\Gibbed.Spore.Properties.csproj">
       <Project>{C149F651-1331-43DE-B838-8756E3AFA89E}</Project>
       <Name>Gibbed.Spore.Properties</Name>

@@ -9,26 +9,24 @@ namespace Gibbed.Spore.Properties
 	{
 		public float Value;
 
-		public override void Read(Stream input, bool array)
+		public override void ReadProp(Stream input, bool array)
 		{
 			this.Value = input.ReadF32BE();
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteProp(Stream output, bool array)
 		{
-			throw new NotImplementedException();
+			output.WriteF32BE(this.Value);
 		}
 
-		public override string Literal
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			get
-			{
-				return this.Value.ToString();
-			}
-			set
-			{
-				this.Value = float.Parse(value);
-			}
+			output.WriteValue(this.Value);
+		}
+
+		public override void ReadXML(System.Xml.XmlReader input)
+		{
+			this.Value = float.Parse(input.ReadString());
 		}
 	}
 }

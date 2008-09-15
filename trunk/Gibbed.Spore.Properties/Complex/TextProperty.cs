@@ -12,7 +12,7 @@ namespace Gibbed.Spore.Properties
 		public uint InstanceId;
 		public string PlaceholderText;
 
-		public override void Read(Stream input, bool array)
+		public override void ReadProp(Stream input, bool array)
 		{
 			if (array == true)
 			{
@@ -47,21 +47,33 @@ namespace Gibbed.Spore.Properties
 			}
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteProp(Stream output, bool array)
 		{
-			throw new NotImplementedException();
+			if (array == true)
+			{
+				output.WriteU32BE(this.TableId);
+				output.WriteU32BE(this.InstanceId);
+				byte[] data = Encoding.Unicode.GetBytes(this.PlaceholderText);
+				output.Write(data, 0, data.Length);
+			}
+			else
+			{
+				throw new NotImplementedException();
+			}
 		}
 
-		public override string Literal
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+			output.WriteAttributeString("tableid", "0x" + this.TableId.ToString("X8"));
+			output.WriteAttributeString("instanceid", "0x" + this.InstanceId.ToString("X8"));
+			output.WriteValue(this.PlaceholderText);
+		}
+
+		public override void ReadXML(System.Xml.XmlReader input)
+		{
+			this.TableId = input.GetAttribute("tableid").GetHexNumber();
+			this.InstanceId = input.GetAttribute("instanceid").GetHexNumber();
+			this.PlaceholderText = input.ReadString();
 		}
 	}
 }

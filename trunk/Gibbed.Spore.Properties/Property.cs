@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml;
 
 namespace Gibbed.Spore.Properties
 {
 	public abstract class Property
 	{
-		public abstract void Read(Stream input, bool array);
-		public abstract void Write(Stream input, bool array);
-		public abstract string Literal { get; set; }
+		public abstract void ReadProp(Stream input, bool array);
+		public abstract void WriteProp(Stream input, bool array);
+		public abstract void WriteXML(XmlWriter output);
+		public abstract void ReadXML(XmlReader input);
 	}
 
-	class PropertyDefinitionAttribute : Attribute
+	public class PropertyDefinitionAttribute : Attribute
 	{
 		public string Name;
 		public string PluralName;

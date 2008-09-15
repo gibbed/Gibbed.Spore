@@ -4,12 +4,13 @@ using Gibbed.Spore.Helpers;
 
 namespace Gibbed.Spore.Properties
 {
-	class Vector2Property : ComplexProperty
+	[PropertyDefinition("vector2", "vector2", 48)]
+	public class Vector2Property : ComplexProperty
 	{
 		public float X;
 		public float Y;
 
-		public override void Read(Stream input, bool array)
+		public override void ReadProp(Stream input, bool array)
 		{
 			this.X = input.ReadF32();
 			this.Y = input.ReadF32();
@@ -20,21 +21,20 @@ namespace Gibbed.Spore.Properties
 			}
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteProp(Stream output, bool array)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override string Literal
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+			output.WriteAttributeString("x", this.X.ToString());
+			output.WriteAttributeString("y", this.Y.ToString());
+		}
+
+		public override void ReadXML(System.Xml.XmlReader input)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

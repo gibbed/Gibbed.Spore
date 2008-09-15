@@ -2,31 +2,36 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Gibbed.Spore.Helpers;
 
 namespace Gibbed.Spore.Properties
 {
-	class String8Property : Property
+	[PropertyDefinition("string8", "string8s", 18)]
+	public class String8Property : Property
 	{
-		public override void Read(Stream input, bool array)
+		public string Value;
+
+		public override void ReadProp(Stream input, bool array)
+		{
+			uint length = input.ReadU32BE();
+			byte[] data = new byte[length];
+			input.Read(data, 0, data.Length);
+			this.Value = Encoding.ASCII.GetString(data);
+		}
+
+		public override void WriteProp(Stream output, bool array)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			throw new NotImplementedException();
+			output.WriteValue(this.Value);
 		}
 
-		public override string Literal
+		public override void ReadXML(System.Xml.XmlReader input)
 		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+			throw new NotImplementedException();
 		}
 	}
 }

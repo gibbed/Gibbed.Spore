@@ -5,30 +5,28 @@ using Gibbed.Spore.Helpers;
 namespace Gibbed.Spore.Properties
 {
 	[PropertyDefinition("int32", "int32s", 9)]
-	class Int32Property : Property
+	public class Int32Property : Property
 	{
 		public Int32 Value;
 
-		public override void Read(Stream input, bool array)
+		public override void ReadProp(Stream input, bool array)
 		{
-			this.Value = input.ReadS32();
+			this.Value = input.ReadS32BE();
 		}
 
-		public override void Write(Stream input, bool array)
+		public override void WriteProp(Stream output, bool array)
 		{
-			throw new NotImplementedException();
+			output.WriteS32BE(this.Value);
 		}
 
-		public override string Literal
+		public override void WriteXML(System.Xml.XmlWriter output)
 		{
-			get
-			{
-				return this.Value.ToString();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+			output.WriteValue(this.Value);
+		}
+
+		public override void ReadXML(System.Xml.XmlReader input)
+		{
+			this.Value = int.Parse(input.ReadString());
 		}
 	}
 }
