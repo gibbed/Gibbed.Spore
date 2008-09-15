@@ -6,6 +6,16 @@ using System.Xml;
 
 namespace Gibbed.Spore.Properties
 {
+	internal interface Boo
+	{
+		void blah();
+	}
+
+	public class Foo : Boo
+	{
+		public void blah() { }
+	}
+
 	public abstract class Property
 	{
 		public abstract void ReadProp(Stream input, bool array);
