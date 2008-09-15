@@ -2384,8 +2384,12 @@ gait3
 gait4
 gait5
 gait6
+gait_epic1
 gait_epic2
+gait_epic3
 gait_epic4
+gait_epic5
+gait_epic6
 galactic_cloud1
 galaxy_long
 galaxy_loop
