@@ -289,13 +289,13 @@ namespace Gibbed.Spore.Helpers
 			byte[] header = new byte[2];
 			stream.Read(header, 0, header.Length);
 
-			bool stop = false;
+			//bool stop = false;
 
 			// hdr & 0x3EFF) == 0x10FB 
 			if ((header[0] & 0x3E) != 0x10 || (header[1] != 0xFB))
 			{
 				// stream is not compressed 
-				stop = true;
+				//stop = true;
 			}
 
 			// read destination (uncompressed) length 

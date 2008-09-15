@@ -14,7 +14,7 @@ namespace Gibbed.Spore.XMLToProp
 	{
 		static void HandleDirectory(Converter converter, string path, string filter, bool recursive)
 		{
-			string[] inputPaths = Directory.GetFiles(path, filter);
+			string[] inputPaths = Directory.GetFiles(path, filter, SearchOption.TopDirectoryOnly);
 
 			foreach (string inputPath in inputPaths)
 			{
@@ -41,7 +41,7 @@ namespace Gibbed.Spore.XMLToProp
 
 			if (recursive == true)
 			{
-				inputPaths = Directory.GetDirectories(path);
+				inputPaths = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
 
 				foreach (string inputPath in inputPaths)
 				{

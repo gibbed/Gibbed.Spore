@@ -30,7 +30,7 @@ namespace Gibbed.Spore.PropertyEditor
 
 			XPathDocument document = new XPathDocument(path);
 			XPathNavigator navigator = document.CreateNavigator();
-			XPathNodeIterator nodes = navigator.Select("/property_names/property_name");
+			XPathNodeIterator nodes = navigator.Select("/names/name");
 
 			while (nodes.MoveNext())
 			{

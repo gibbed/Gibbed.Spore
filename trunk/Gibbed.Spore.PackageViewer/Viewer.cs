@@ -6,6 +6,8 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.XPath;
 using Gibbed.Spore.Helpers;
 using Gibbed.Spore.Package;
 
@@ -79,7 +81,7 @@ namespace Gibbed.Spore.PackageViewer
 			this.TypeExtensions[0x02523258] = "formation";
 			this.TypeExtensions[0x02D5C9AF] = "summary";
 			this.TypeExtensions[0x02D5C9B0] = "summary_pill";
-			this.TypeExtensions[0x02FAC0B6] = "txt";
+			this.TypeExtensions[0x02FAC0B6] = "locale";
 			this.TypeExtensions[0x030BDEE3] = "pollen_metadata";
 			this.TypeExtensions[0x0376C3DA] = "hm";
 			this.TypeExtensions[0x0472329B] = "htra";
@@ -91,7 +93,7 @@ namespace Gibbed.Spore.PackageViewer
 			this.TypeExtensions[0x2F7D0007] = "gif";
 			this.TypeExtensions[0x4AEB6BC6] = "tlsa";
 			this.TypeExtensions[0x7C19AA7A] = "pctp";
-			this.TypeExtensions[0xEFBDA3FF] = "layout";
+			this.TypeExtensions[0xEFBDA3FF] = "layout"; // source format for .spui?
 
 			// Hashed version of the extension
 			this.TypeExtensions[0x12952634] = "dat";
@@ -99,20 +101,21 @@ namespace Gibbed.Spore.PackageViewer
 			this.TypeExtensions[0x1E99B626] = "bat";
 			this.TypeExtensions[0x1F639D98] = "xls";
 			this.TypeExtensions[0x2399BE55] = "bld"; // building
-			this.TypeExtensions[0x24682294] = "vcl"; // vehicle
+			this.TypeExtensions[0x24682294] = "vcl"; // vehicle (land, sea, air)
 			this.TypeExtensions[0x250FE9A2] = "spui"; // SPore User Interface
 			this.TypeExtensions[0x25DF0112] = "gait";
-			this.TypeExtensions[0x2B6CAB5F] = "locale"; // this is actually 'txt', but I renamed it to locale so it doesn't conflict with the other txt
+			this.TypeExtensions[0x2B6CAB5F] = "txt";
 			this.TypeExtensions[0x2B978C46] = "crt"; // creature
 			this.TypeExtensions[0x37979F71] = "cfg";
 			this.TypeExtensions[0x3C77532E] = "psd";
 			this.TypeExtensions[0x3C7E0F63] = "mcl"; // muscle
 			this.TypeExtensions[0x3D97A8E4] = "cll"; // cell
 			this.TypeExtensions[0x3F9C28B5] = "ani";
-			this.TypeExtensions[0x438F6347] = "flr"; // flier
+			this.TypeExtensions[0x438F6347] = "flr"; // flora
 			this.TypeExtensions[0x448AE7E2] = "hkx"; // havok physics (or effect?)
 			this.TypeExtensions[0x476A98C7] = "ufo"; // spaceship
 			this.TypeExtensions[0x497767B9] = "pfx"; // particle effect
+			this.TypeExtensions[0x5C74D18B] = "density";
 			this.TypeExtensions[0x617715C4] = "py";
 			this.TypeExtensions[0x617715D9] = "pd";
 			this.TypeExtensions[0x9B8E862F] = "world";
@@ -150,8 +153,8 @@ namespace Gibbed.Spore.PackageViewer
 			this.typeList.Nodes.Clear();
 			this.typeList.BeginUpdate();
 
-			TreeNode knownNode = this.typeList.Nodes.Add("Known");
-			TreeNode unknownNode = this.typeList.Nodes.Add("Unknown");
+			TreeNode knownNode = new TreeNode("Known");
+			TreeNode unknownNode = new TreeNode("Unknown");
 
 			for (int i = 0; i < db.Indices.Length; i++)
 			{
@@ -192,14 +195,27 @@ namespace Gibbed.Spore.PackageViewer
 				files.Add(index);
 			}
 
-			foreach (uint typeId in typeNodes.Keys)
+			if (knownNode.Nodes.Count > 0)
 			{
+				this.typeList.Nodes.Add(knownNode);
+			}
 
+			if (unknownNode.Nodes.Count > 0)
+			{
+				this.typeList.Nodes.Add(unknownNode);
 			}
 
 			this.typeList.Sort();
 			this.typeList.EndUpdate();
-			knownNode.Expand();
+
+			if (knownNode.Nodes.Count > 0)
+			{
+				knownNode.Expand();
+			}
+			else if (unknownNode.Nodes.Count > 0)
+			{
+				unknownNode.Expand();
+			}
 		}
 
 		private void OnSelectType(object sender, TreeViewEventArgs e)
@@ -265,6 +281,12 @@ namespace Gibbed.Spore.PackageViewer
 
 			string basePath = this.saveAllFolderDialog.SelectedPath;
 
+			XmlTextWriter writer = new XmlTextWriter(Path.Combine(basePath, "files.xml"), Encoding.Unicode);
+			writer.Formatting = Formatting.Indented;
+
+			writer.WriteStartDocument();
+			writer.WriteStartElement("files");
+
 			for (int i = 0; i < this.DatabaseFiles.Length; i++)
 			{
 				DatabaseIndex index = this.DatabaseFiles[i];
@@ -302,10 +324,19 @@ namespace Gibbed.Spore.PackageViewer
 					fileName += "." + typeName;
 				}
 
-				string path = Path.Combine(Path.Combine(basePath, typeName), groupName);
-				Directory.CreateDirectory(path);
+				string fragmentPath = Path.Combine(typeName, groupName);
+				Directory.CreateDirectory(Path.Combine(basePath, fragmentPath));
 
-				path = Path.Combine(path, fileName);
+				string path = Path.Combine(fragmentPath, fileName);
+
+				writer.WriteStartElement("file");
+				writer.WriteAttributeString("groupid", "0x" + index.GroupId.ToString("X8"));
+				writer.WriteAttributeString("instanceid", "0x" + index.InstanceId.ToString("X8"));
+				writer.WriteAttributeString("typeid", "0x" + index.TypeId.ToString("X8"));
+				writer.WriteValue(path);
+				writer.WriteEndElement();
+
+				path = Path.Combine(basePath, path);
 
 				if (index.Compressed)
 				{
@@ -327,6 +358,11 @@ namespace Gibbed.Spore.PackageViewer
 			}
 
 			input.Close();
+
+			writer.WriteEndElement();
+			writer.WriteEndDocument();
+			writer.Flush();
+			writer.Close();
 		}
 	}
 }

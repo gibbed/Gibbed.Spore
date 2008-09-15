@@ -57,7 +57,7 @@ namespace Gibbed.Spore.Package
 
 		public void Read(Stream stream)
 		{
-			bool bigger = false;
+			//bool bigger = false;
 			int indexCount = 0;
 			int indexSize = 0;
 			uint indexOffset = 0;
@@ -70,7 +70,7 @@ namespace Gibbed.Spore.Package
 
 			if (magic == 0x46424244) // DBBF
 			{
-				bigger = true;
+				//bigger = true;
 			}
 
 			int majorVersion = stream.ReadS32();
