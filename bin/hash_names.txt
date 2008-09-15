@@ -109,6 +109,10 @@ alg-sporeguide
 alg-steeltribe
 alg-titaniumcivilization
 alg-universeinabox
+alg-unlockcrg
+alg-unlockcvg
+alg-unlockspg
+alg-unlocktrg
 all
 allylaser1
 allylaser2
@@ -1536,7 +1540,6 @@ clg-landfall
 clg-move
 clg-pacifist
 clg-speedfreak
-clg-unlockcrg
 clg2_discoverer
 clg2_killer
 clg2crg
@@ -2028,7 +2031,6 @@ crg-speeddemon
 crg-spitclose
 crg-starving
 crg-superpowerlocked
-crg-unlocktrg
 crg-useabilitybite
 crg-useabilitycharge
 crg-useabilitydance
@@ -2114,7 +2116,6 @@ cvg-spicehorder
 cvg-starman
 cvg-techlevelupgrade
 cvg-transitiontospace
-cvg-unlockspg
 cvg2spg
 cvg_clg_meat
 cvg_clg_mix
@@ -4759,7 +4760,6 @@ trg-tribal
 trg-tribeeatcarni
 trg-tribeeatherbi
 trg-tribeeatomni
-trg-unlockcvg
 trg-vicious
 trg-watchfulparent
 trg2cvg
