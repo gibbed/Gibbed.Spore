@@ -24,18 +24,18 @@ namespace Gibbed.Spore.Properties
 		public override void ReadProp(Stream input, bool array)
 		{
 			this.Unknown01 = input.ReadU32BE();
-			this.Unknown02 = input.ReadF32BE();
-			this.Unknown03 = input.ReadF32BE();
-			this.Unknown04 = input.ReadF32BE();
-			this.Unknown05 = input.ReadF32BE();
-			this.Unknown06 = input.ReadF32BE();
-			this.Unknown07 = input.ReadF32BE();
-			this.Unknown08 = input.ReadF32BE();
-			this.Unknown09 = input.ReadF32BE();
-			this.Unknown10 = input.ReadF32BE();
-			this.Unknown11 = input.ReadF32BE();
-			this.Unknown12 = input.ReadF32BE();
-			this.Unknown13 = input.ReadF32BE();
+			this.Unknown02 = input.ReadF32();
+			this.Unknown03 = input.ReadF32();
+			this.Unknown04 = input.ReadF32();
+			this.Unknown05 = input.ReadF32();
+			this.Unknown06 = input.ReadF32();
+			this.Unknown07 = input.ReadF32();
+			this.Unknown08 = input.ReadF32();
+			this.Unknown09 = input.ReadF32();
+			this.Unknown10 = input.ReadF32();
+			this.Unknown11 = input.ReadF32();
+			this.Unknown12 = input.ReadF32();
+			this.Unknown13 = input.ReadF32();
 		}
 
 		public override void WriteProp(Stream output, bool array)
