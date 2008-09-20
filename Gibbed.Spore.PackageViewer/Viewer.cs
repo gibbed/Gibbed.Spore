@@ -22,7 +22,66 @@ namespace Gibbed.Spore.PackageViewer
 
 		private Font MonospaceFont = new Font(FontFamily.GenericMonospace, 9.0f);
 
-		private Dictionary<uint, string> HashedNames;
+		// File names
+		private Dictionary<uint, string> FileNames;
+
+		// Group names
+		private Dictionary<uint, string> GroupNames;
+
+		private void LoadFileNames(string path)
+		{
+			this.FileNames = new Dictionary<uint, string>();
+
+			if (File.Exists(path))
+			{
+				TextReader reader = new StreamReader(path);
+
+				while (true)
+				{
+					string line = reader.ReadLine();
+					if (line == null)
+					{
+						break;
+					}
+
+					uint hash = line.FNV();
+					this.FileNames[hash] = line;
+				}
+
+				reader.Close();
+			}
+		}
+
+		private void LoadGroupNames(string path)
+		{
+			this.GroupNames = new Dictionary<uint, string>();
+
+			if (File.Exists(path))
+			{
+				XPathDocument document = new XPathDocument(path);
+				XPathNavigator navigator = document.CreateNavigator();
+				XPathNodeIterator nodes = navigator.Select("/names/name");
+
+				while (nodes.MoveNext())
+				{
+					uint id;
+					string key = nodes.Current.GetAttribute("id", "");
+					string value = nodes.Current.Value;
+
+					if (key.StartsWith("(hash(") && key.EndsWith("))"))
+					{
+						string tmp = key.Substring(6, key.Length - 8);
+						id = tmp.FNV();
+					}
+					else
+					{
+						id = key.GetHexNumber();
+					}
+
+					this.GroupNames[id] = value;
+				}
+			}
+		}
 
 		private void OnLoad(object sender, EventArgs e)
 		{
@@ -41,27 +100,8 @@ namespace Gibbed.Spore.PackageViewer
 				this.openDialog.InitialDirectory = path;
 			}
 
-			this.HashedNames = new Dictionary<uint, string>();
-
-			string listPath = Path.Combine(Application.StartupPath, "hash_names.txt");
-			if (File.Exists(listPath))
-			{
-				TextReader reader = new StreamReader(listPath);
-
-				while (true)
-				{
-					string line = reader.ReadLine();
-					if (line == null)
-					{
-						break;
-					}
-
-					uint hash = line.FNV();
-					this.HashedNames[hash] = line;
-				}
-
-				reader.Close();
-			}
+			this.LoadFileNames(Path.Combine(Application.StartupPath, "hash_names.txt"));
+			this.LoadGroupNames(Path.Combine(Application.StartupPath, "group_names.xml"));
 		}
 
 		// A stupid way to do it but it's for the Save All function.
@@ -172,18 +212,18 @@ namespace Gibbed.Spore.PackageViewer
 			{
 				ListViewItem listViewItem = new ListViewItem("");
 
-				if (this.HashedNames.ContainsKey(file.InstanceId))
+				if (this.FileNames.ContainsKey(file.InstanceId))
 				{
-					listViewItem.Text = this.HashedNames[file.InstanceId];
+					listViewItem.Text = this.FileNames[file.InstanceId];
 				}
 				else
 				{
 					listViewItem.Text = "#" + file.InstanceId.ToString("X8");
 				}
 
-				if (this.HashedNames.ContainsKey(file.GroupId))
+				if (this.GroupNames.ContainsKey(file.GroupId))
 				{
-					listViewItem.SubItems.Add(this.HashedNames[file.GroupId]);
+					listViewItem.SubItems.Add(this.GroupNames[file.GroupId]);
 				}
 				else
 				{
@@ -219,7 +259,7 @@ namespace Gibbed.Spore.PackageViewer
 			string basePath = this.saveAllFolderDialog.SelectedPath;
 
 			SaveAllProgress progress = new SaveAllProgress();
-			progress.ShowSaveProgress(this, input, this.DatabaseFiles, this.HashedNames, basePath);
+			progress.ShowSaveProgress(this, input, this.DatabaseFiles, this.FileNames, this.GroupNames, basePath);
 
 			input.Close();
 		}

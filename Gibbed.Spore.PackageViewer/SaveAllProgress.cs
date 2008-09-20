@@ -66,18 +66,18 @@ namespace Gibbed.Spore.PackageViewer
 				string typeName = null;
 				string groupName = null;
 
-				if (info.HashedNames.ContainsKey(index.InstanceId))
+				if (info.FileNames.ContainsKey(index.InstanceId))
 				{
-					fileName = info.HashedNames[index.InstanceId];
+					fileName = info.FileNames[index.InstanceId];
 				}
 				else
 				{
 					fileName = "#" + index.InstanceId.ToString("X8");
 				}
 
-				if (info.HashedNames.ContainsKey(index.GroupId))
+				if (info.GroupNames.ContainsKey(index.GroupId))
 				{
-					groupName = info.HashedNames[index.GroupId];
+					groupName = info.GroupNames[index.GroupId];
 				}
 				else
 				{
@@ -142,17 +142,19 @@ namespace Gibbed.Spore.PackageViewer
 			public string BasePath;
 			public Stream Archive;
 			public DatabaseIndex[] Files;
-			public Dictionary<uint, string> HashedNames;
+			public Dictionary<uint, string> FileNames;
+			public Dictionary<uint, string> GroupNames;
 		}
 
 		private Thread SaveThread;
-		public void ShowSaveProgress(IWin32Window owner, Stream archive, DatabaseIndex[] files, Dictionary<uint, string> hashedNames, string basePath)
+		public void ShowSaveProgress(IWin32Window owner, Stream archive, DatabaseIndex[] files, Dictionary<uint, string> fileNames, Dictionary<uint, string> groupNames, string basePath)
 		{
 			SaveAllInformation info;
 			info.BasePath = basePath;
 			info.Archive = archive;
 			info.Files = files;
-			info.HashedNames = hashedNames;
+			info.FileNames = fileNames;
+			info.GroupNames = groupNames;
 
 			this.progressBar.Value = 0;
 			this.progressBar.Maximum = files.Length;
