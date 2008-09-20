@@ -105,7 +105,9 @@
 			// 
 			// openDialog
 			// 
-			this.openDialog.Filter = "Spore Packages|*.package|All Files|*.*";
+			this.openDialog.Filter = "All Spore Packages|*.package;*.spo;*.db;*.dat;*.pld;*.pkp;*.pkt|Spore Packages (*" +
+				".package)|*.package|Spore Save Packages|*.spo;*.db;*.dat;*.pld;*.pkp;*.pkt|All F" +
+				"iles (*.*)|*.*";
 			// 
 			// splitContainer1
 			// 

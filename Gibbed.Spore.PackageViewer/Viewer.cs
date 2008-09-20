@@ -23,7 +23,6 @@ namespace Gibbed.Spore.PackageViewer
 		private Font MonospaceFont = new Font(FontFamily.GenericMonospace, 9.0f);
 
 		private Dictionary<uint, string> HashedNames;
-		private Dictionary<uint, string> TypeExtensions;
 
 		private void OnLoad(object sender, EventArgs e)
 		{
@@ -48,7 +47,7 @@ namespace Gibbed.Spore.PackageViewer
 			if (File.Exists(listPath))
 			{
 				TextReader reader = new StreamReader(listPath);
-				
+
 				while (true)
 				{
 					string line = reader.ReadLine();
@@ -63,73 +62,6 @@ namespace Gibbed.Spore.PackageViewer
 
 				reader.Close();
 			}
-
-			// This should probably go in a file but for now it's hardcoded.
-			this.TypeExtensions = new Dictionary<uint, string>();
-
-			// Unhashed or unknown extension
-			this.TypeExtensions[0x00B1B104] = "prop";
-			this.TypeExtensions[0x00E6BCE5] = "gmdl";
-			this.TypeExtensions[0x011989B7] = "plt"; // Palette
-			this.TypeExtensions[0x01AD2416] = "creature_traits";
-			this.TypeExtensions[0x01AD2417] = "building_traits";
-			this.TypeExtensions[0x01AD2418] = "vehicle_traits";
-			this.TypeExtensions[0x01C135DA] = "gmsh";
-			this.TypeExtensions[0x01C3C4B3] = "trait_pill";
-			this.TypeExtensions[0x0248F226] = "css";
-			this.TypeExtensions[0x024A0E52] = "trigger";
-			this.TypeExtensions[0x02523258] = "formation";
-			this.TypeExtensions[0x02D5C9AF] = "summary";
-			this.TypeExtensions[0x02D5C9B0] = "summary_pill";
-			this.TypeExtensions[0x02FAC0B6] = "locale";
-			this.TypeExtensions[0x030BDEE3] = "pollen_metadata";
-			this.TypeExtensions[0x0376C3DA] = "hm";
-			this.TypeExtensions[0x0472329B] = "htra";
-			this.TypeExtensions[0x2F4E681C] = "raster";
-			this.TypeExtensions[0x2F7D0002] = "jpeg";
-			this.TypeExtensions[0x2F7D0004] = "png";
-			this.TypeExtensions[0x2F7D0005] = "bmp";
-			this.TypeExtensions[0x2F7D0006] = "tga";
-			this.TypeExtensions[0x2F7D0007] = "gif";
-			this.TypeExtensions[0x4AEB6BC6] = "tlsa";
-			this.TypeExtensions[0x7C19AA7A] = "pctp";
-			this.TypeExtensions[0xEFBDA3FF] = "layout"; // source format for .spui?
-
-			// Hashed version of the extension
-			this.TypeExtensions[0x12952634] = "dat";
-			this.TypeExtensions[0x1A99B06B] = "bem";
-			this.TypeExtensions[0x1E99B626] = "bat";
-			this.TypeExtensions[0x1F639D98] = "xls";
-			this.TypeExtensions[0x2399BE55] = "bld"; // building
-			this.TypeExtensions[0x24682294] = "vcl"; // vehicle (land, sea, air)
-			this.TypeExtensions[0x250FE9A2] = "spui"; // SPore User Interface
-			this.TypeExtensions[0x25DF0112] = "gait";
-			this.TypeExtensions[0x2B6CAB5F] = "txt";
-			this.TypeExtensions[0x2B978C46] = "crt"; // creature
-			this.TypeExtensions[0x37979F71] = "cfg";
-			this.TypeExtensions[0x3C77532E] = "psd";
-			this.TypeExtensions[0x3C7E0F63] = "mcl"; // muscle
-			this.TypeExtensions[0x3D97A8E4] = "cll"; // cell
-			this.TypeExtensions[0x3F9C28B5] = "ani";
-			this.TypeExtensions[0x438F6347] = "flr"; // flora
-			this.TypeExtensions[0x448AE7E2] = "hkx"; // havok physics (or effect?)
-			this.TypeExtensions[0x476A98C7] = "ufo"; // spaceship
-			this.TypeExtensions[0x497767B9] = "pfx"; // particle effect
-			this.TypeExtensions[0x5C74D18B] = "density";
-			this.TypeExtensions[0x617715C4] = "py";
-			this.TypeExtensions[0x617715D9] = "pd";
-			this.TypeExtensions[0x9B8E862F] = "world";
-			this.TypeExtensions[0xDFAD9F51] = "cell";
-		}
-
-		private string GetExtensionForType(uint typeId)
-		{
-			if (this.TypeExtensions.ContainsKey(typeId))
-			{
-				return this.TypeExtensions[typeId];
-			}
-
-			return null;
 		}
 
 		// A stupid way to do it but it's for the Save All function.
@@ -140,6 +72,11 @@ namespace Gibbed.Spore.PackageViewer
 			if (this.openDialog.ShowDialog() != DialogResult.OK)
 			{
 				return;
+			}
+
+			if (this.openDialog.InitialDirectory != null)
+			{
+				this.openDialog.InitialDirectory = null;
 			}
 
 			Stream input = this.openDialog.OpenFile();
@@ -165,7 +102,7 @@ namespace Gibbed.Spore.PackageViewer
 				{
 					typeNode = new TreeNode();
 					#region typeNode.Text = extension or typeid
-					string text = this.GetExtensionForType(index.TypeId);
+					string text = Types.GetExtensionFromId(index.TypeId);
 					bool isUnknown = false;
 					if (text == null)
 					{
@@ -281,88 +218,10 @@ namespace Gibbed.Spore.PackageViewer
 
 			string basePath = this.saveAllFolderDialog.SelectedPath;
 
-			XmlTextWriter writer = new XmlTextWriter(Path.Combine(basePath, "files.xml"), Encoding.Unicode);
-			writer.Formatting = Formatting.Indented;
-
-			writer.WriteStartDocument();
-			writer.WriteStartElement("files");
-
-			for (int i = 0; i < this.DatabaseFiles.Length; i++)
-			{
-				DatabaseIndex index = this.DatabaseFiles[i];
-
-				string fileName = null;
-				string typeName = null;
-				string groupName = null;
-
-				if (this.HashedNames.ContainsKey(index.InstanceId))
-				{
-					fileName = this.HashedNames[index.InstanceId];
-				}
-				else
-				{
-					fileName = "#" + index.InstanceId.ToString("X8");
-				}
-
-				if (this.HashedNames.ContainsKey(index.GroupId))
-				{
-					groupName = this.HashedNames[index.GroupId];
-				}
-				else
-				{
-					groupName = "#" + index.GroupId.ToString("X8");
-				}
-
-				typeName = this.GetExtensionForType(index.TypeId);
-				
-				if (typeName == null)
-				{
-					typeName = "#" + index.TypeId.ToString("X8");
-				}
-				else
-				{
-					fileName += "." + typeName;
-				}
-
-				string fragmentPath = Path.Combine(typeName, groupName);
-				Directory.CreateDirectory(Path.Combine(basePath, fragmentPath));
-
-				string path = Path.Combine(fragmentPath, fileName);
-
-				writer.WriteStartElement("file");
-				writer.WriteAttributeString("groupid", "0x" + index.GroupId.ToString("X8"));
-				writer.WriteAttributeString("instanceid", "0x" + index.InstanceId.ToString("X8"));
-				writer.WriteAttributeString("typeid", "0x" + index.TypeId.ToString("X8"));
-				writer.WriteValue(path);
-				writer.WriteEndElement();
-
-				path = Path.Combine(basePath, path);
-
-				if (index.Compressed)
-				{
-					input.Seek(index.Offset, SeekOrigin.Begin);
-					byte[] d = input.RefPackDecompress(index.CompressedSize, index.DecompressedSize);
-					FileStream output = new FileStream(path, FileMode.Create);
-					output.Write(d, 0, d.Length);
-					output.Close();
-				}
-				else
-				{
-					input.Seek(index.Offset, SeekOrigin.Begin);
-					byte[] d = new byte[index.DecompressedSize];
-					input.Read(d, 0, d.Length);
-					FileStream output = new FileStream(path, FileMode.Create);
-					output.Write(d, 0, d.Length);
-					output.Close();
-				}
-			}
+			SaveAllProgress progress = new SaveAllProgress();
+			progress.ShowSaveProgress(this, input, this.DatabaseFiles, this.HashedNames, basePath);
 
 			input.Close();
-
-			writer.WriteEndElement();
-			writer.WriteEndDocument();
-			writer.Flush();
-			writer.Close();
 		}
 	}
 }

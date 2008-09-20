@@ -67,7 +67,7 @@ namespace Gibbed.Spore.PropToXML
 			PropertyFile file = new PropertyFile();
 			file.Read(input);
 
-			XmlTextWriter writer = new XmlTextWriter(output, Encoding.Unicode);
+			XmlTextWriter writer = new XmlTextWriter(output, Encoding.UTF8);
 			writer.Formatting = Formatting.Indented;
 
 			writer.WriteStartDocument();

@@ -93,7 +93,7 @@ namespace Gibbed.Spore.PropHashes
 
 			this.Hashes.Sort();
 
-			XmlTextWriter writer = new XmlTextWriter(Path.Combine(Application.StartupPath, "new_property_names.xml"), Encoding.Unicode);
+			XmlTextWriter writer = new XmlTextWriter(Path.Combine(Application.StartupPath, "new_property_names.xml"), Encoding.UTF8);
 			writer.Formatting = Formatting.Indented;
 			writer.WriteStartDocument();
 			writer.WriteStartElement("names");
