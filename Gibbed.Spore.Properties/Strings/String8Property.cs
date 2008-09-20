@@ -16,12 +16,14 @@ namespace Gibbed.Spore.Properties
 			uint length = input.ReadU32BE();
 			byte[] data = new byte[length];
 			input.Read(data, 0, data.Length);
-			this.Value = Encoding.ASCII.GetString(data);
+			this.Value = Encoding.UTF8.GetString(data);
 		}
 
 		public override void WriteProp(Stream output, bool array)
 		{
-			throw new NotImplementedException();
+			output.WriteS32BE(this.Value.Length);
+			byte[] data = Encoding.UTF8.GetBytes(this.Value);
+			output.Write(data, 0, data.Length);
 		}
 
 		public override void WriteXML(System.Xml.XmlWriter output)
@@ -31,7 +33,7 @@ namespace Gibbed.Spore.Properties
 
 		public override void ReadXML(System.Xml.XmlReader input)
 		{
-			throw new NotImplementedException();
+			this.Value = input.ReadString();
 		}
 	}
 }
