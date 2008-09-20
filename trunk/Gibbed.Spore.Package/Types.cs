@@ -68,6 +68,7 @@ namespace Gibbed.Spore.Package
 				case 0x617715D9: return "pd"; // sound related
 				case 0x9B8E862F: return "world";
 				case 0xDFAD9F51: return "cell";
+				case 0xEE17C6AD: return "animation";
 			}
 
 			return null;
