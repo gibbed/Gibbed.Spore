@@ -16,8 +16,8 @@ namespace Gibbed.Spore.Properties
 		{
 			if (array == true)
 			{
-				this.TableId = input.ReadU32BE();
-				this.InstanceId = input.ReadU32BE();
+				this.TableId = input.ReadU32();
+				this.InstanceId = input.ReadU32();
 
 				int size = (int)input.Length - 8;
 
@@ -51,8 +51,8 @@ namespace Gibbed.Spore.Properties
 		{
 			if (array == true)
 			{
-				output.WriteU32BE(this.TableId);
-				output.WriteU32BE(this.InstanceId);
+				output.WriteU32(this.TableId);
+				output.WriteU32(this.InstanceId);
 				byte[] data = Encoding.Unicode.GetBytes(this.PlaceholderText);
 				output.Write(data, 0, data.Length);
 			}
