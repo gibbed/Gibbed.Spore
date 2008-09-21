@@ -55,6 +55,14 @@ namespace Gibbed.Spore.Properties
 				output.WriteU32(this.InstanceId);
 				byte[] data = Encoding.Unicode.GetBytes(this.PlaceholderText);
 				output.Write(data, 0, data.Length);
+				
+				// For some reason text from real properties are minimum 512 bytes for text, so
+				// I'll emulate that here, not sure if it is needed though.
+				if (data.Length < 512)
+				{
+					data = new byte[512 - data.Length];
+					output.Write(data, 0, data.Length);
+				}
 			}
 			else
 			{

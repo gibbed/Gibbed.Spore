@@ -16,15 +16,6 @@ namespace Gibbed.Spore.Properties
 
 		public override void ReadProp(Stream input, bool array)
 		{
-			/*
-			this.MinX = input.ReadF32BE();
-			this.MinY = input.ReadF32BE();
-			this.MinZ = input.ReadF32BE();
-			this.MaxX = input.ReadF32BE();
-			this.MaxY = input.ReadF32BE();
-			this.MaxZ = input.ReadF32BE();
-			*/
-
 			this.MinX = input.ReadF32();
 			this.MinY = input.ReadF32();
 			this.MinZ = input.ReadF32();
