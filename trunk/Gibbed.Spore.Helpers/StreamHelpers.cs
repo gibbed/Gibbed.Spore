@@ -124,6 +124,19 @@ namespace Gibbed.Spore.Helpers
 			stream.Write(data, 0, 2);
 		}
 
+		public static UInt32 ReadU24BE(this Stream stream)
+		{
+			byte[] data = new byte[4];
+			stream.Read(data, 1, 3);
+			return BitConverter.ToUInt32(data, 0).Swap();
+		}
+		
+		public static void WriteU24BE(this Stream stream, UInt32 value)
+		{
+			byte[] data = BitConverter.GetBytes(value.Swap());
+			stream.Write(data, 1, 3);
+		}
+
 		/// <summary>
 		/// Read a signed 32-bit integer.
 		/// </summary>
@@ -136,7 +149,7 @@ namespace Gibbed.Spore.Helpers
 			return BitConverter.ToInt32(data, 0);
 		}
 
-		public static void WriteS16(this Stream stream, Int32 value)
+		public static void WriteS32(this Stream stream, Int32 value)
 		{
 			byte[] data = BitConverter.GetBytes(value);
 			stream.Write(data, 0, 4);
@@ -282,6 +295,55 @@ namespace Gibbed.Spore.Helpers
 			UInt32 swappedvalue = BitConverter.ToUInt32(data, 0).Swap();
 			data = BitConverter.GetBytes(swappedvalue);
 			stream.Write(data, 0, 4);
+		}
+
+		/// <summary>
+		/// Read a 64-bit floating point number.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public static Double ReadF64(this Stream stream)
+		{
+			byte[] data = new byte[8];
+			stream.Read(data, 0, 8);
+			return BitConverter.ToDouble(data, 0);
+		}
+
+		public static void WriteF64(this Stream stream, Double value)
+		{
+			byte[] data = BitConverter.GetBytes(value);
+			stream.Write(data, 0, 8);
+		}
+
+		/// <summary>
+		/// Read a 64-bit floating point number.
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public static Double ReadF64BE(this Stream stream)
+		{
+			return BitConverter.Int64BitsToDouble((long)stream.ReadU64BE());
+		}
+
+		public static void WriteF64BE(this Stream stream, Double value)
+		{
+			byte[] data = BitConverter.GetBytes(value);
+			UInt64 swappedvalue = BitConverter.ToUInt64(data, 0).Swap();
+			data = BitConverter.GetBytes(swappedvalue);
+			stream.Write(data, 0, 8);
+		}
+
+		public static string ReadASCII(this Stream stream, uint size)
+		{
+			byte[] data = new byte[size];
+			stream.Read(data, 0, data.Length);
+			return Encoding.ASCII.GetString(data);
+		}
+
+		public static void WriteASCII(this Stream stream, string value)
+		{
+			byte[] data = Encoding.ASCII.GetBytes(value);
+			stream.Write(data, 0, data.Length);
 		}
 
 		public static void ReadRefPackCompressionHeader(this Stream stream)

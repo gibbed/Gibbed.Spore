@@ -113,19 +113,6 @@ namespace Gibbed.Spore.Package
 		public Version Version;
 		public DatabaseIndex[] Indices;
 
-		public static object BytesToStructure(byte[] data, Type type)
-        {
-			if (data.Length != Marshal.SizeOf(type))
-			{
-				throw new Exception("structure size is not the same as the data size");
-			}
-
-            GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			object structure = Marshal.PtrToStructure(handle.AddrOfPinnedObject(), type);
-            handle.Free();
-			return structure;
-        }
-
 		public void Read(Stream stream)
 		{
 			bool big = false;
@@ -152,7 +139,7 @@ namespace Gibbed.Spore.Package
 				}
 
 				stream.Read(data, 0, data.Length);
-				header = (DatabaseBigPackageFileHeader)(BytesToStructure(data, typeof(DatabaseBigPackageFileHeader)));
+				header = (DatabaseBigPackageFileHeader)data.BytesToStructure(typeof(DatabaseBigPackageFileHeader));
 
 				if (header.Always3 != 3)
 				{
@@ -178,7 +165,7 @@ namespace Gibbed.Spore.Package
 				}
 
 				stream.Read(data, 0, data.Length);
-				header = (DatabasePackedFileHeader)(BytesToStructure(data, typeof(DatabasePackedFileHeader)));
+				header = (DatabasePackedFileHeader)data.BytesToStructure(typeof(DatabasePackedFileHeader));
 
 				if (header.Always3 != 3)
 				{
