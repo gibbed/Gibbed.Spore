@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml;
-using System.Xml.XPath;
-using System.Windows.Forms;
 using Gibbed.Spore.Helpers;
 using Gibbed.Spore.Properties;
 
