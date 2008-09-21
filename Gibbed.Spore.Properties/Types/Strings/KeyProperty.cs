@@ -31,7 +31,7 @@ namespace Gibbed.Spore.Properties
 
 			if (array == false)
 			{
-				output.WriteU32(0);
+				output.WriteU32(0); // junk
 			}
 		}
 
