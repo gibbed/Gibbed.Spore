@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using Gibbed.Spore.Helpers;
 using System.Runtime.InteropServices;
+using Gibbed.Spore.Helpers;
 
 namespace Gibbed.Spore.Package
 {
@@ -110,8 +111,8 @@ namespace Gibbed.Spore.Package
 
 	public class DatabasePackedFile
 	{
-		public Version Version;
-		public DatabaseIndex[] Indices;
+		public Version Version = new Version();
+		public List<DatabaseIndex> Indices = new List<DatabaseIndex>();
 
 		public void Read(Stream stream)
 		{
@@ -179,7 +180,7 @@ namespace Gibbed.Spore.Package
 				indexSize = header.IndexSize;
 			}
 
-			this.Indices = new DatabaseIndex[indexCount];
+			this.Indices = new List<DatabaseIndex>();
 
 			if (indexCount > 0)
 			{
@@ -215,54 +216,101 @@ namespace Gibbed.Spore.Package
 
 				for (int i = 0; i < indexCount; i++)
 				{
-					this.Indices[i] = new DatabaseIndex();
-					#region this.Index[i].TypeId
+					DatabaseIndex index = new DatabaseIndex();
+					#region index.TypeId
 					if ((indexHeaderValues & (1 << 0)) == 1 << 0)
 					{
-						this.Indices[i].TypeId = indexTypeId;
+						index.TypeId = indexTypeId;
 					}
 					else
 					{
-						this.Indices[i].TypeId = stream.ReadU32();
+						index.TypeId = stream.ReadU32();
 					}
 					#endregion
-					#region this.Index[i].GroupId
+					#region index.GroupId
 					if ((indexHeaderValues & (1 << 1)) == 1 << 1)
 					{
-						this.Indices[i].GroupId = indexGroupId;
+						index.GroupId = indexGroupId;
 					}
 					else
 					{
-						this.Indices[i].GroupId = stream.ReadU32();
+						index.GroupId = stream.ReadU32();
 					}
 					#endregion
-					#region this.Index[i].Unknown
+					#region index.Unknown
 					if ((indexHeaderValues & (1 << 2)) == 1 << 2)
 					{
-						this.Indices[i].Unknown = indexUnknown;
+						index.Unknown = indexUnknown;
 					}
 					else
 					{
-						this.Indices[i].Unknown = stream.ReadU32();
+						index.Unknown = stream.ReadU32();
 					}
 					#endregion
-					this.Indices[i].InstanceId = stream.ReadU32();
+					index.InstanceId = stream.ReadU32();
 
 					if (big == true)
 					{
-						this.Indices[i].Offset = stream.ReadS64();
+						index.Offset = stream.ReadS64();
 					}
 					else
 					{
-						this.Indices[i].Offset = stream.ReadS32();
+						index.Offset = stream.ReadS32();
 					}
 
-					this.Indices[i].CompressedSize = stream.ReadU32();
-					this.Indices[i].DecompressedSize = stream.ReadU32();
-					this.Indices[i].CompressedFlags = stream.ReadS16();
-					this.Indices[i].Flags = stream.ReadU16();
-					this.Indices[i].CheckCompressed();
+					index.CompressedSize = stream.ReadU32();
+					index.DecompressedSize = stream.ReadU32();
+					index.CompressedFlags = stream.ReadS16();
+					index.Flags = stream.ReadU16();
+					index.CheckCompressed();
+
+					this.Indices.Add(index);
 				}
+			}
+		}
+	
+		private static byte[] StructureToBytes(object structure)
+		{
+			int size = Marshal.SizeOf(structure.GetType());
+			byte[] data = new byte[size];
+			GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+			Marshal.StructureToPtr(structure, handle.AddrOfPinnedObject(), false);
+			handle.Free();
+			return data;
+		}
+
+		public void WriteHeader(Stream output, int indexOffset, int indexSize)
+		{
+			bool big = false;
+
+			output.WriteASCII("DBPF");
+			DatabasePackedFileHeader header = new DatabasePackedFileHeader();
+			header.MajorVersion = this.Version.Major;
+			header.MinorVersion = this.Version.Minor;
+			header.Always3 = 3;
+			header.IndexCount = this.Indices.Count;
+			header.IndexOffset = indexOffset;
+			header.IndexSize = indexSize;
+
+			byte[] data = StructureToBytes(header);
+			output.Write(data, 0, data.Length);
+		}
+
+		public void WriteIndex(Stream output)
+		{
+			output.WriteU32(4); // index header values
+			output.WriteU32(0); // unknown
+
+			foreach (DatabaseIndex index in this.Indices)
+			{
+				output.WriteU32(index.TypeId);
+				output.WriteU32(index.GroupId);
+				output.WriteU32(index.InstanceId);
+				output.WriteS32((int)index.Offset);
+				output.WriteU32(index.CompressedSize);
+				output.WriteU32(index.DecompressedSize);
+				output.WriteS16(index.CompressedFlags);
+				output.WriteU16(index.Flags);
 			}
 		}
 	}

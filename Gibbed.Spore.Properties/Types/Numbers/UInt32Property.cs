@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Gibbed.Spore.Helpers;
+﻿using Gibbed.Spore.Helpers;
 
 namespace Gibbed.Spore.Properties
 {

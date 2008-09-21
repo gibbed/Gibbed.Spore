@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
 using System.Xml.XPath;
 using Gibbed.Spore.Helpers;
 using Gibbed.Spore.Package;
@@ -123,7 +119,7 @@ namespace Gibbed.Spore.PackageViewer
 			DatabasePackedFile db = new DatabasePackedFile();
 			db.Read(input);
 
-			this.DatabaseFiles = db.Indices;
+			this.DatabaseFiles = db.Indices.ToArray();
 
 			Dictionary<uint, TreeNode> typeNodes = new Dictionary<uint, TreeNode>();
 
@@ -133,9 +129,9 @@ namespace Gibbed.Spore.PackageViewer
 			TreeNode knownNode = new TreeNode("Known");
 			TreeNode unknownNode = new TreeNode("Unknown");
 
-			for (int i = 0; i < db.Indices.Length; i++)
+			for (int i = 0; i < this.DatabaseFiles.Length; i++)
 			{
-				DatabaseIndex index = db.Indices[i];
+				DatabaseIndex index = this.DatabaseFiles[i];
 
 				TreeNode typeNode = null;
 				if (typeNodes.ContainsKey(index.TypeId) == false)

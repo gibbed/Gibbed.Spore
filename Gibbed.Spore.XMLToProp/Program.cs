@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Xml;
-using System.Xml.XPath;
-using Gibbed.Spore.Helpers;
-using Gibbed.Spore.Properties;
 using System.Windows.Forms;
+using Gibbed.Spore.Properties;
 
 namespace Gibbed.Spore.XMLToProp
 {
