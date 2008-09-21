@@ -37,7 +37,6 @@ namespace Gibbed.Spore.Package
 				case 0x2F7D0005: return "bmp";
 				case 0x2F7D0006: return "tga";
 				case 0x2F7D0007: return "gif";
-				case 0x376840D7: return "movie";
 				case 0x4AEB6BC6: return "tlsa";
 				case 0x7C19AA7A: return "pctp";
 				case 0xCF6C21B8: return "xml"; // NEW
@@ -54,6 +53,7 @@ namespace Gibbed.Spore.Package
 				case 0x25DF0112: return "gait";
 				case 0x2B6CAB5F: return "txt";
 				case 0x2B978C46: return "crt"; // creature
+				case 0x376840D7: return "vp6"; // VP6 encoded video, see http://en.wikipedia.org/wiki/VP6
 				case 0x37979F71: return "cfg";
 				case 0x3C77532E: return "psd";
 				case 0x3C7E0F63: return "mcl"; // muscle
