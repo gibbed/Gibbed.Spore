@@ -4953,6 +4953,7 @@ open_vi_civ_03
 open_vi_civ_04
 open_vi_civ_05
 open_vi_civ_06
+openingmovies
 optionproperties
 options
 options_sporeguide
