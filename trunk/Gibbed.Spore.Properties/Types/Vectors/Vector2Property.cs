@@ -3,7 +3,7 @@ using Gibbed.Spore.Helpers;
 
 namespace Gibbed.Spore.Properties
 {
-	[PropertyDefinition("vector2", "vector2", 48)]
+	[PropertyDefinition("vector2", "vector2s", 48)]
 	public class Vector2Property : Property
 	{
 		public float X;
