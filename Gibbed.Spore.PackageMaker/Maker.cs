@@ -38,7 +38,16 @@ namespace Gibbed.Spore.PackageMaker
 				index.TypeId = typeText.GetHexNumber();
 				index.Offset = output.Position;
 
-				string inputPath = Path.Combine(filesBasePath, nodes.Current.Value);
+				string inputPath;
+				if (Path.IsPathRooted(nodes.Current.Value) == false)
+				{
+					// relative path, it should be relative to the XML file
+					inputPath = Path.Combine(filesBasePath, nodes.Current.Value);
+				}
+				else
+				{
+					inputPath = nodes.Current.Value;
+				}
 
 				if (File.Exists(inputPath) == false)
 				{

@@ -36,6 +36,11 @@ namespace Gibbed.Spore.Properties
 		/// <param name="fileType">The id of the property as represented in a property file</param>
 		public PropertyDefinitionAttribute(string name, string pluralName, ushort fileType)
 		{
+			if (name == pluralName)
+			{
+				throw new Exception("singular name cannot be the same as the plural name");
+			}
+
 			this.Name = name;
 			this.PluralName = pluralName;
 			this.FileType = fileType;
