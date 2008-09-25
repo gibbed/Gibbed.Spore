@@ -151,10 +151,11 @@ namespace Gibbed.Spore.ModMaker
 			xml.WriteElementString("website", info.Mod.Website);
 			xml.WriteElementString("description", info.Mod.Description);
 			xml.WriteElementString("version", info.Mod.Version);
+			xml.WriteElementString("createdwith", "Gibbed.Spore.ModMaker");
 			xml.WriteEndElement();
 			xml.WriteEndDocument();
 			xml.Flush();
-
+			
 			DatabaseIndex modInfoIndex = new DatabaseIndex();
 			modInfoIndex.GroupId = 0;
 			modInfoIndex.InstanceId = 0;
