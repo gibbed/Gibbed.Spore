@@ -92,6 +92,7 @@ achievements
 adblitz
 add
 aggregation
+aiscript
 alg-aluminumcell
 alg-architect
 alg-automotiveengineer
@@ -716,6 +717,7 @@ bongo6
 bongo7
 bongo8
 boulder
+box
 brainsurgeon-1
 brainsurgeon-2
 brainsurgeon-3
@@ -998,6 +1000,8 @@ c2s_idle_v1
 c2s_idle_v2
 c2s_idle_v3_lookleft
 c2s_idle_v4_lookrt
+c2s_vignette_part1
+c2s_vignette_part2
 c2s_walkin
 c2s_walkin_nog
 c2s_walkin_part1
@@ -1752,6 +1756,7 @@ city_normaloutfit
 city_planner_drummer2
 city_population
 city_ufo
+citygamebuildingtuning
 citygamegeneraltuning
 cityhall
 cityplanner_welcome
@@ -2418,9 +2423,13 @@ creature_spine_size56
 creature_spine_size57
 creature_spine_size58
 creature_vo
+creatureantennatemplate
+creaturecamera
 creaturecellshopper
 creaturecivshopper
 creaturecreate
+creaturedetailtemplate
+creatureeartemplate
 creatureedit
 creatureeditorcsa
 creatureeditorextralarge
@@ -2428,11 +2437,22 @@ creatureeditorlarge
 creatureeditormedium
 creatureeditorsetup
 creatureeditorsmall
+creatureeyetemplate
+creaturefintemplate
+creaturefoottemplate
 creaturegame
+creaturegamesetup
 creaturegametuning
+creaturegameverbs
+creaturegraspertemplate
+creaturemouthtemplate
+creaturenosetemplate
+creaturerigblocktemplate
 creatures
 creaturespaceshopper
 creaturetribeshopper
+creatureweapontemplate
+creaturewingtemplate
 crg-abilitynotready
 crg-addposse
 crg-bestial
@@ -2791,6 +2811,7 @@ cvg_trg_mixwin
 cvg_trg_social
 cvg_trg_socialwin
 cvg_usedsuperpower
+cvg_vi_death
 cvg_vi_death_01a
 cvg_vi_death_01b
 cvg_vi_death_01c
@@ -3403,6 +3424,7 @@ fish_succ_3
 fishing_spear_grasper_overlay
 flagella
 flash
+flockingtuning
 floraeditorsetup
 flute_grasper_overlay
 flute_idle_01
@@ -4298,6 +4320,7 @@ kingfisher1
 kingfisher2
 kingfisher3
 kroot
+laser
 laserlevel1
 laserlevel2
 laserlevel3
@@ -4750,6 +4773,7 @@ mot_surrender_start
 mot_surrender_start_nog
 mot_surrender_stop
 mot_surrender_stop_nog
+motivetuning
 mountains
 mountains_arizona
 mountains_claymation
@@ -4947,6 +4971,7 @@ omni_incity_flip
 omnivore
 onebang
 onecount
+open_vi
 open_vi_civ_01
 open_vi_civ_02
 open_vi_civ_03
@@ -6277,6 +6302,7 @@ soc_walkby_wave_hello
 soc_zomgwtf
 social
 socialbar
+socialgametuning
 soft
 soft_moving
 soft_moving1
@@ -6423,6 +6449,7 @@ spear_stab_nog
 spear_throw
 spear_throw_gethit
 spear_throw_nog
+speciestuning
 speed1
 speed1-5
 speed2
@@ -6858,6 +6885,7 @@ t2c_mob_planes
 t2c_mob_tanks
 t2c_mob_warchant_v1
 t2c_mob_warchant_v2
+t2c_vignette
 ta_chestpieces_01
 ta_chestpieces_02
 ta_chestpieces_03
@@ -7183,6 +7211,8 @@ trg_accessorizedcreature
 trg_attack
 trg_befriendedtribe
 trg_boughttool
+trg_build
+trg_city
 trg_clg_meat
 trg_clg_mix
 trg_clg_plant
@@ -7210,6 +7240,7 @@ trg_rain
 trg_sacrifice_altar1
 trg_seaweedgathered
 trg_social
+trg_start
 trg_tribememberborn
 trg_tribememberdied
 trg_vi_baby_born_01
@@ -7292,6 +7323,7 @@ tribegivesmoney
 tribegivesunit
 tribehut
 tribeplanner_thetribalplanner
+tribetuning
 trip_shaman110_1
 trip_shaman110_2
 trip_shaman110_3
@@ -7401,6 +7433,7 @@ universe_organ6
 universe_organ7
 universe_organ8
 universesimulatortuning
+upgrade_air
 upgrade_air_vi_01
 upgrade_air_vi_01_nog
 upgrade_air_vi_02
@@ -7410,6 +7443,7 @@ upgrade_air_vi_05
 upgrade_air_vi_06
 upgrade_air_vi_07
 upgrade_air_vi_08
+upgrade_water
 upgrade_water_vi_01
 upgrade_water_vi_01_nog
 upgrade_water_vi_02
