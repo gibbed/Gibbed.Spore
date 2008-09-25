@@ -17,6 +17,7 @@
   <name id="0x100D977C">editors_creature</name>
   <name id="0x100D977D">editors_building</name>
   <name id="0x106C7116">global_ui_creature</name>
+  <name id="0x1BA8B527">vignettes_tribe</name>
   <name id="0x260EB59C">achievements</name>
   <name id="0x3064CB38">ufotools</name>
   <name id="0x31A44893">graphics_atlas</name>
@@ -27,8 +28,10 @@
   <name id="0x8F223C4C">verbicons_tribegame</name>
   <name id="0x8C509D6C">timeline</name>
   <name id="0x9CC3EB58">verbicons_creatureeditor</name>
+  <name id="0xA080E6CD">vignettes_civ</name>
   <name id="0xAD56080C">creaturegame</name>
   <name id="0xB02D5A52">launchscreen</name>
+  <name id="0xB94BBB7E">creatureeditortemplates</name>
   <name id="0xCA14DE92">assetbrowser</name>
   <name id="0xD509FFBF">consequence</name>
   <name id="0xE1D7164F">timelineevents</name>
